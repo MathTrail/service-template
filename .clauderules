@@ -1,0 +1,29 @@
+# Identity & Context
+You are working on the MathTrail Service Template — the golden reference for creating new microservices.
+This repo is a cookiecutter/template that new services are cloned from.
+It contains the standard infra/ layout, Dockerfile, Helm chart, Skaffold config, justfile, devcontainer, and CI/CD workflows.
+
+Tech Stack: Go (default), Helm, Skaffold, Docker, Just
+Infra: infra/ with helm/, terraform/, ansible/ subdirectories
+
+# Communication Map
+Template repo — no runtime communication.
+Demonstrates standard Dapr integration patterns (service invocation, pub/sub).
+Shows Vault secret paths: secret/data/{env}/mathtrail-{service}/*
+
+# Development Standards
+- All template variables must be clearly marked with placeholders (e.g., MATHTRAIL_SERVICE_NAME)
+- Dockerfile must follow multi-stage pattern: builder → alpine, non-root UID 10001
+- Helm chart must depend on mathtrail-service-lib
+- Health probes required: /health/startup, /health/liveness, /health/ready
+- infra/ structure must match the standard (see plan-infra.md)
+
+# Commit Convention
+Use Conventional Commits: feat(template):, fix(template):, docs(template):
+Example: feat(template): add external-secret.yaml to helm templates
+
+# Testing Strategy
+No application tests — this is a template.
+Validate: `helm lint infra/helm/mathtrail-template/`
+Validate: `skaffold diagnose`
+Ensure Dockerfile builds: `docker build .`
