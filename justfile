@@ -15,6 +15,30 @@ set shell := ["bash", "-c"]
 NAMESPACE := "mathtrail"
 SERVICE   := "CHANGE_ME"
 
+# -- Portable Image Build (buildctl → buildah) --------------------------------
+
+# Build and push a container image using the best available builder
+# CI (K3s runner): buildctl talks to buildkitd sidecar
+# Local dev: buildah builds rootlessly
+[private]
+build-image tag:
+    #!/bin/bash
+    set -e
+    if command -v buildctl &>/dev/null; then
+        echo "🔨 Building with BuildKit..."
+        buildctl build \
+            --frontend=dockerfile.v0 \
+            --local context=. \
+            --local dockerfile=. \
+            --output type=image,name={{tag}},push=true,registry.insecure=true \
+            --export-cache type=inline \
+            --import-cache type=registry,ref={{tag}}
+    else
+        echo "🔨 Building with Buildah..."
+        buildah bud -t {{tag}} .
+        buildah push --tls-verify=false {{tag}}
+    fi
+
 # -- CI/CD Contract ------------------------------------------------------------
 
 # Lint the codebase
