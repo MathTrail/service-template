@@ -11,8 +11,11 @@
 #   just ci-cleanup pr-123
 
 set shell := ["bash", "-c"]
+set dotenv-load
+set dotenv-path := "/etc/mathtrail/platform.env"
+set export
 
-NAMESPACE := "mathtrail"
+NAMESPACE := env_var("NAMESPACE")
 SERVICE   := "CHANGE_ME"
 
 # -- Portable Image Build (buildctl → buildah) --------------------------------
