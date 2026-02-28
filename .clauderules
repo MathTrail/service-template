@@ -8,7 +8,7 @@ Infra: infra/ with helm/, terraform/, ansible/ subdirectories
 
 # Communication Map
 Template repo — no runtime communication.
-Demonstrates standard Dapr integration patterns (service invocation, pub/sub).
+Demonstrates standard integration patterns (service invocation, pub/sub).
 Shows Vault secret paths: secret/data/{env}/mathtrail-{service}/*
 
 # Development Standards
